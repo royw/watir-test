@@ -1,4 +1,5 @@
-require "rspec"
+require 'rspec'
+require 'yell'
 
 RSpec.configure do |config|
   config.before(:all) do
