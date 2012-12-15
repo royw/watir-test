@@ -42,6 +42,7 @@ Lines starting with a '#' are ignored
       rescue Exception => ex
         puts ex.to_s
         puts CREDENTIALS_ERRMSG
+        abort 'Prerequisites not met'
       end
       [name, email, password]
     end
