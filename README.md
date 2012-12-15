@@ -35,3 +35,28 @@ then add to ~/.exports
 ```bash
 export SELENIUM_SERVER_JAR=/usr/local/opt/selenium-server-standalone/selenium-server-standalone-2.25.0.jar
 ```
+
+## Prerequisites
+
+You must have a .credentials file in the spec directory.
+The contents of the .credentials file must be:
+
+```
+name=me
+email=you@example.org
+password=sekret
+```
+
+Naturally use your credentials instead of these.
+Leading and trailing whitespaces are ignored as are whitespaces around the equal sign.
+
+You should not add the .credentials file to your version control.
+
+You should make it read-only for yourself (chmod 400 .credentials)
+
+Lines starting with a '#' are ignored
+
+
+## Usage
+
+rake spec
