@@ -65,6 +65,14 @@ Lines starting with a '#' are ignored
       result
     end
 
+    def scroll_right(browser, elem)
+      count = 10
+      while(!elem.visible? && count > 0)
+        browser.send_keys :right
+        count -= 1
+      end
+    end
+
     # logon to the community website
     # @param [Watir::Browser] browser the watir browser instance to use
     # @param [Array<String,String,String>] creds the credentials as [name,email,password]
@@ -72,8 +80,12 @@ Lines starting with a '#' are ignored
       name, email, password = creds
       browser.goto COMMUNITY_URL
       browser.url.should == COMMUNITY_URL
+
       # note, mac ff needs a couple of attempts to scroll view to Login
-      attempt(3) { browser.link(:text, 'Login').when_present.click }
+      login_elem = browser.link(:text, 'Login')
+      scroll_right browser, login_elem
+      attempt(3) { login_elem.hover }
+      attempt(3) { login_elem.click }
 
       email_xpath = '//*[@id="login_form"]//*[@id="email"]'
       password_xpath = '//*[@id="login_form"]//*[@id="password"]'
@@ -87,17 +99,14 @@ Lines starting with a '#' are ignored
     # @param [Watir::Browser] browser the watir browser instance to use
     def logoff(browser)
       name, email, password = credentials
+
       # note, mac ff needs a couple of attempts to scroll view to Login
       name_elem = browser.link(:text, name)
-      while(!name_elem.visible?)
-        browser.send_keys :right
-      end
-      attempt(3) { name_elem.hover }
+      scroll_right browser, name_elem
+      0.upto(3).each { name_elem.hover rescue nil }
 
       logout_elem = browser.link(:xpath, '//div[@data-nav="account"]/a[@href="/logout"]')
-      while(!logout_elem.visible?)
-        browser.send_keys :right
-      end
+      scroll_right browser, logout_elem
       logout_elem.click
     end
   end

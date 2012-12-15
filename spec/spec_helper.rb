@@ -1,8 +1,10 @@
 require 'rspec'
 require 'yell'
+require 'pry'
 
 RSpec.configure do |config|
   config.before(:all) do
+    @logger = Yell.new STDOUT
     ENV['WATIR_BROWSER'] ||= 'ff'
     @browser =
     case ENV['WATIR_BROWSER'].downcase
@@ -19,7 +21,6 @@ RSpec.configure do |config|
        require 'safariwatir'
        Watir::Safari.new
     end
-    @logger = Yell.new STDOUT
   end
 
   config.after(:all) do
